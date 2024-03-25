@@ -11,10 +11,7 @@ import br.com.alura.adopet.api.model.Tutor;
 import br.com.alura.adopet.api.repository.AdocaoRepository;
 import br.com.alura.adopet.api.repository.PetRepository;
 import br.com.alura.adopet.api.repository.TutorRepository;
-import br.com.alura.adopet.api.validacao.PetAvaliacaoAndamento;
-import br.com.alura.adopet.api.validacao.TutorAvalicaoAndamento;
-import br.com.alura.adopet.api.validacao.TutorMaximoAdocao;
-import br.com.alura.adopet.api.validacao.ValidaPetAdotado;
+import br.com.alura.adopet.api.validacao.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -38,17 +35,7 @@ public class AdocaoService {
     private EmailService emailService;
 
     @Autowired
-    private ValidaPetAdotado validaPetAdotado;
-
-    @Autowired
-    private TutorAvalicaoAndamento tutorAvalicaoAndamento;
-
-    @Autowired
-    private PetAvaliacaoAndamento petAvaliacaoAndamento;
-
-    @Autowired
-    private TutorMaximoAdocao tutorMaximoAdocao;
-
+    private List<Validacoes> validacoes;
 
 
     public void solicitar(SolicitacaoAdocaoDTO dto) {
@@ -56,10 +43,7 @@ public class AdocaoService {
 
         Pet pet = petRepository.getReferenceById(dto.idPet());
 
-        validaPetAdotado.validaAdocao(dto);
-        tutorAvalicaoAndamento.tutorAvaliacaoAndamento(dto);
-        petAvaliacaoAndamento.petAvaliacaoAndamento(dto);
-        tutorMaximoAdocao.tutorMaximoAdocao(dto);
+        validacoes.forEach(v -> v.validar(dto));
 
         Adocao adocao = new Adocao();
         adocao.setData(LocalDateTime.now());

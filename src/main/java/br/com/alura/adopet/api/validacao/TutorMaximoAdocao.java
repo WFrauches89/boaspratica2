@@ -14,7 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Component
-public class TutorMaximoAdocao {
+public class TutorMaximoAdocao implements Validacoes{
 
     @Autowired
     private AdocaoRepository adocaoRepository;
@@ -23,7 +23,7 @@ public class TutorMaximoAdocao {
     private TutorRepository tutorRepository;
 
 
-    public void tutorMaximoAdocao(SolicitacaoAdocaoDTO dto) {
+    public void validar(SolicitacaoAdocaoDTO dto) {
 
         Tutor tutor = tutorRepository.getReferenceById(dto.idTutor());
 

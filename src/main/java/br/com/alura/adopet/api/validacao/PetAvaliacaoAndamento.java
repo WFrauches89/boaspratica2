@@ -13,7 +13,7 @@ import org.springframework.stereotype.Component;
 import java.util.List;
 
 @Component
-public class PetAvaliacaoAndamento {
+public class PetAvaliacaoAndamento implements Validacoes{
 
     @Autowired
     private AdocaoRepository adocaoRepository;
@@ -21,9 +21,8 @@ public class PetAvaliacaoAndamento {
     @Autowired
     private PetRepository petRepository;
 
-
-    public void petAvaliacaoAndamento(SolicitacaoAdocaoDTO dto) {
-
+    @Override
+    public void validar(SolicitacaoAdocaoDTO dto) {
         Pet pet = petRepository.getReferenceById(dto.idPet());
 
         List<Adocao> adocoes = adocaoRepository.findAll();
@@ -32,8 +31,5 @@ public class PetAvaliacaoAndamento {
                 throw new ValidacaoExcetion("Pet já está aguardando avaliação para ser adotado!");
             }
         }
-
     }
-
-
 }

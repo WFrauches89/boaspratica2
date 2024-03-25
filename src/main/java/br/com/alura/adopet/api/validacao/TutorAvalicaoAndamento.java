@@ -13,7 +13,7 @@ import org.springframework.stereotype.Component;
 import java.util.List;
 
 @Component
-public class TutorAvalicaoAndamento{
+public class TutorAvalicaoAndamento implements Validacoes{
 
     @Autowired
     private AdocaoRepository adocaoRepository;
@@ -21,19 +21,16 @@ public class TutorAvalicaoAndamento{
     @Autowired
     private TutorRepository tutorRepository;
 
-    public void tutorAvaliacaoAndamento(SolicitacaoAdocaoDTO dto){
+    @Override
+    public void validar(SolicitacaoAdocaoDTO dto) {
 
         Tutor tutor = tutorRepository.getReferenceById(dto.idTutor());
 
         List<Adocao> adocoes = adocaoRepository.findAll();
-                for (Adocao a : adocoes) {
+        for (Adocao a : adocoes) {
             if (a.getTutor() == tutor && a.getStatus() == StatusAdocao.AGUARDANDO_AVALIACAO) {
                 throw new ValidacaoExcetion("Tutor já possui outra adoção aguardando avaliação!");
             }
         }
-
     }
-
-
-
 }
