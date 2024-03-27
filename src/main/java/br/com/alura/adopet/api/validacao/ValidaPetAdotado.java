@@ -1,7 +1,7 @@
 package br.com.alura.adopet.api.validacao;
 
 import br.com.alura.adopet.api.dto.SolicitacaoAdocaoDTO;
-import br.com.alura.adopet.api.exception.ValidacaoExcetion;
+import br.com.alura.adopet.api.exception.ValidacaoException;
 import br.com.alura.adopet.api.model.Pet;
 import br.com.alura.adopet.api.repository.PetRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,7 +17,7 @@ public class ValidaPetAdotado implements Validacoes{
     public void validar(SolicitacaoAdocaoDTO dto) {
         Pet pet = petRepository.getReferenceById(dto.idPet());
         if (pet.getAdotado()) {
-            throw new ValidacaoExcetion("Pet já foi adotado!");
+            throw new ValidacaoException("Pet já foi adotado!");
         }
     }
 }

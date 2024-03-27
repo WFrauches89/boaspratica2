@@ -3,10 +3,8 @@ package br.com.alura.adopet.api.service;
 import br.com.alura.adopet.api.dto.SolicitacaoAdocaoDTO;
 import br.com.alura.adopet.api.dto.AprovacaoSolicitacaoAdocaoDTO;
 import br.com.alura.adopet.api.dto.ReprovacaoSolicitacaoAdocaoDTO;
-import br.com.alura.adopet.api.exception.ValidacaoExcetion;
 import br.com.alura.adopet.api.model.Adocao;
 import br.com.alura.adopet.api.model.Pet;
-import br.com.alura.adopet.api.model.StatusAdocao;
 import br.com.alura.adopet.api.model.Tutor;
 import br.com.alura.adopet.api.repository.AdocaoRepository;
 import br.com.alura.adopet.api.repository.PetRepository;
@@ -15,7 +13,6 @@ import br.com.alura.adopet.api.validacao.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 
@@ -45,12 +42,7 @@ public class AdocaoService {
 
         validacoes.forEach(v -> v.validar(dto));
 
-        Adocao adocao = new Adocao();
-        adocao.setData(LocalDateTime.now());
-        adocao.setStatus(StatusAdocao.AGUARDANDO_AVALIACAO);
-        adocao.setPet(pet);
-        adocao.setTutor(tutor);
-        adocao.setMotivo(dto.motivo());
+        Adocao adocao = new Adocao(tutor,pet,dto.motivo());
         repository.save(adocao);
 
         String to = adocao.getPet().getAbrigo().getEmail();
@@ -69,7 +61,7 @@ public class AdocaoService {
     public void aprovar(AprovacaoSolicitacaoAdocaoDTO dto) {
 
         Adocao adocao = repository.getReferenceById(dto.idAdocao());
-        adocao.setStatus(StatusAdocao.APROVADO);
+        adocao.marcarAprovado();
         repository.save(adocao);
 
         String to = adocao.getTutor().getEmail();
@@ -88,8 +80,7 @@ public class AdocaoService {
     public void reprovar(ReprovacaoSolicitacaoAdocaoDTO dto) {
 
         Adocao adocao = repository.getReferenceById(dto.idAdocao());
-        adocao.setStatus(StatusAdocao.REPROVADO);
-        adocao.setJustificativaStatus(dto.justificativa());
+        adocao.marcarReprovado(dto.justificativa());
         repository.save(adocao);
 
         String to = adocao.getTutor().getEmail();

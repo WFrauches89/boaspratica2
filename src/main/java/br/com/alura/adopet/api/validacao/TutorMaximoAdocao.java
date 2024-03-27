@@ -1,7 +1,7 @@
 package br.com.alura.adopet.api.validacao;
 
 import br.com.alura.adopet.api.dto.SolicitacaoAdocaoDTO;
-import br.com.alura.adopet.api.exception.ValidacaoExcetion;
+import br.com.alura.adopet.api.exception.ValidacaoException;
 import br.com.alura.adopet.api.model.Adocao;
 import br.com.alura.adopet.api.model.StatusAdocao;
 import br.com.alura.adopet.api.model.Tutor;
@@ -34,7 +34,7 @@ public class TutorMaximoAdocao implements Validacoes{
                 contador = contador + 1;
             }
             if (contador == 5) {
-                throw new ValidacaoExcetion("Tutor chegou ao limite máximo de 5 adoções!");
+                throw new ValidacaoException("Tutor chegou ao limite máximo de 5 adoções!");
             }
         }
     }

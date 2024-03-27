@@ -1,11 +1,14 @@
 package br.com.alura.adopet.api.model;
 
+import br.com.alura.adopet.api.dto.AtualizacaoTutorDto;
+import br.com.alura.adopet.api.dto.CadastroTutorDto;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -15,26 +18,16 @@ public class Tutor {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
     private Long id;
 
-    @NotBlank
-    @Column(name = "nome")
     private String nome;
 
-    @NotBlank
-    @Pattern(regexp = "\\(?\\d{2}\\)?\\d?\\d{4}-?\\d{4}")
-    @Column(name = "telefone")
     private String telefone;
 
-    @NotBlank
-    @Email
-    @Column(name = "email")
     private String email;
 
-    @OneToMany(mappedBy = "tutor", fetch = FetchType.EAGER)
-    @JsonManagedReference("tutor_adocoes")
-    private List<Adocao> adocoes;
+    @OneToMany(mappedBy = "tutor")
+    private List<Adocao> adocoes = new ArrayList<>();
 
     @Override
     public boolean equals(Object o) {
@@ -42,6 +35,14 @@ public class Tutor {
         if (o == null || getClass() != o.getClass()) return false;
         Tutor tutor = (Tutor) o;
         return Objects.equals(id, tutor.id);
+    }
+
+    public Tutor() {}
+
+    public Tutor(CadastroTutorDto dto) {
+        this.nome = dto.nome();
+        this.telefone = dto.telefone();
+        this.email = dto.email();
     }
 
     @Override
@@ -87,5 +88,10 @@ public class Tutor {
 
     public void setAdocoes(List<Adocao> adocoes) {
         this.adocoes = adocoes;
+    }
+
+    public void atualizarDados(AtualizacaoTutorDto dto) {
+
+
     }
 }

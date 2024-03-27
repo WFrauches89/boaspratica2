@@ -3,7 +3,7 @@ package br.com.alura.adopet.api.controller;
 import br.com.alura.adopet.api.dto.SolicitacaoAdocaoDTO;
 import br.com.alura.adopet.api.dto.AprovacaoSolicitacaoAdocaoDTO;
 import br.com.alura.adopet.api.dto.ReprovacaoSolicitacaoAdocaoDTO;
-import br.com.alura.adopet.api.exception.ValidacaoExcetion;
+import br.com.alura.adopet.api.exception.ValidacaoException;
 import br.com.alura.adopet.api.service.AdocaoService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,7 +24,7 @@ public class AdocaoController {
         try{
             this.adocaoService.solicitar(dto);
             return ResponseEntity.ok("Adoção solicitada com sucesso!");
-        }catch (ValidacaoExcetion v){
+        }catch (ValidacaoException v){
             return ResponseEntity.badRequest().body(v.getMessage());
         }
     }
